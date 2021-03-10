@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import math
 
+
+
 def getContours(img):
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     for cnt in contours:
@@ -19,7 +21,7 @@ def getContours(img):
             if objCor == 4:
                 objectType = "Mahjong"
 
-                width, height = 124, 176
+                width, height = 200, 200
                 if math.dist(approx[0][0], approx[1][0]) > math.dist(approx[0][0], approx[3][0]):
                     pts1 = np.float32([approx[0], approx[1], approx[2], approx[3]])
                 else:
