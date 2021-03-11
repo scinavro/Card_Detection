@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import math
+from CNN_Model import model
 
 def getContours(img):
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
@@ -42,6 +43,8 @@ def getContours(img):
             cv2.rectangle(imgContour, (x, y), (x+w, y+h), (0, 255, 0), 2)
             cv2.putText(imgContour, objectType,
                         (x+(w//2)-10, y+(h//2)-10), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
+
+
 
 
 cap = cv2.VideoCapture(0)

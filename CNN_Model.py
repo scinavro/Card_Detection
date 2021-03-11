@@ -2,22 +2,20 @@ import torch
 import torchvision.datasets as dsets
 import torchvision.transforms as transforms
 import torch.nn.init
+from torch.utils.data import DataLoader
+from Custom_Dataset import CustomDataset
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-torch.manual_seed(777)
-if device == 'cuda':
-    torch.cuda.manual_seed_all(777)
-
 learning_rate = 0.001
-training_epochs = 15
-batch_size = 100
+training_epochs = 3
+batch_size = 50
 
+dataset = CustomDataset(csv_file='mycsv.csv', root_dir='Resources', transform=transforms.ToTensor())
 
-mnist_train = dsets.MNIST(root='MNIST_data/', train=True, transform=transforms.ToTensor(), download=True)
-mnist_test = dsets.MNIST(root='MNIST_data/', train=False, transform=transforms.ToTensor(), download=True)
-
-data_loader = torch.utils.data.DataLoader(dataset=mnist_train, batch_size=batch_size, shuffle=True, drop_last=True)
+train_set, test_set = torch.utils.data.random_split(dataset, [1350, 449])
+train_loader = DataLoader(dataset=train_set, batch_size=batch_size, shuffle=True, drop_last=True)
+test_loader = DataLoader(dataset=test_set, batch_size=batch_size, shuffle=True, drop_last=True)
 
 class CNN(torch.nn.Module):
 
@@ -34,7 +32,7 @@ class CNN(torch.nn.Module):
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(kernel_size=(2, 2), stride=2))
 
-        self.fc = torch.nn.Linear(7*7*64, 10, bias=True)
+        self.fc = torch.nn.Linear(50*50*64, 3, bias=True)
 
         torch.nn.init.xavier_uniform_(self.fc.weight)
 
@@ -45,19 +43,25 @@ class CNN(torch.nn.Module):
         out = self.fc(out)
         return out
 
+def save_checkpoint(state, filename="my_checkpoint.pth.tar"):
+    print("Saving checkpoint")
+    torch.save(state, filename)
+
 
 model = CNN().to(device)
 
 criterion = torch.nn.CrossEntropyLoss().to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-total_batch = len(data_loader)
+
+
+total_batch = len(train_loader)
 
 if __name__ == "__main__":
     for epoch in range(training_epochs):
         avg_cost = 0
 
-        for X, Y in data_loader:
+        for X, Y in train_loader:
 
             X = X.to(device)
             Y = Y.to(device)
@@ -72,11 +76,5 @@ if __name__ == "__main__":
 
         print('[Epoch: {:>4}] cost = {:>.9}'.format(epoch + 1, avg_cost))
 
-    with torch.no_grad():
-        X_test = mnist_test.test_data.view(len(mnist_test), 1, 28, 28).float().to(device)
-        Y_test = mnist_test.test_labels.to(device)
-
-        prediction = model(X_test)
-        correct_prediction = torch.argmax(prediction, 1) == Y_test
-        accuracy = correct_prediction.float().mean()
-        print('Accuracy:', accuracy.item())
+    checkpoint = {'state_dict' : model.state_dict()}
+    save_checkpoint(checkpoint)
