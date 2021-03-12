@@ -10,10 +10,12 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 learning_rate = 0.001
 training_epochs = 3
 batch_size = 50
+num_types = 5
+
 
 dataset = CustomDataset(csv_file='mycsv.csv', root_dir='Resources', transform=transforms.ToTensor())
 
-train_set, test_set = torch.utils.data.random_split(dataset, [1350, 449])
+train_set, test_set = torch.utils.data.random_split(dataset, [int(3/4*len(dataset)), len(dataset)-int(3/4*len(dataset))])
 train_loader = DataLoader(dataset=train_set, batch_size=batch_size, shuffle=True, drop_last=True)
 test_loader = DataLoader(dataset=test_set, batch_size=batch_size, shuffle=True, drop_last=True)
 
@@ -32,7 +34,7 @@ class CNN(torch.nn.Module):
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(kernel_size=(2, 2), stride=2))
 
-        self.fc = torch.nn.Linear(50*50*64, 3, bias=True)
+        self.fc = torch.nn.Linear(50*50*64, num_types, bias=True)
 
         torch.nn.init.xavier_uniform_(self.fc.weight)
 

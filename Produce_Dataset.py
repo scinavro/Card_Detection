@@ -75,7 +75,7 @@ while True:
     elif k%256 == 32:
         # SPACE pressed
 
-        img_name = "sak_five_{}.png".format(img_counter)
+        img_name = "Choong_r_{}.png".format(img_counter)
         try:
             cv2.imwrite(img_name, imgTrain)
             print("{} written!".format(img_name))

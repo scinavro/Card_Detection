@@ -12,7 +12,7 @@ def getContours(img):
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     for cnt in contours:
         area = cv2.contourArea(cnt)
-        if area>1000:
+        if 5000>area>1000:
             # print(area)
             cv2.drawContours(imgContour, cnt, -1, (255, 0, 0), 3)
             peri = cv2.arcLength(cnt, True)
@@ -45,9 +45,11 @@ def getContours(img):
                 if MahjongType.item() == 0: objectType = "Sak_5"
                 elif MahjongType.item() == 1: objectType = "Man_7"
                 elif MahjongType.item() == 2: objectType = "Man_7"
+                elif MahjongType.item() == 3: objectType = "Choong"
+                elif MahjongType.item() == 4: objectType = "Choong"
 
                 cv2.imshow("Mahjong Image", imgMahjong)
-                cv2.waitKey(10)
+                cv2.waitKey(1)
 
             else: objectType = " "
 
