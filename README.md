@@ -11,7 +11,7 @@ poong_dong_{}.png ~ poong_book_{}.png (동서남북)
 Baek_{}.png Bal_{}.png Choong_{}.png (백발중)   
    
 !!상하 대칭이 아닌 이미지는 뒤집어진 이미지 데이터도 저장해야하며, 뒤집어진 데이터는 파일명에 _r 을 붙인다!!   
-ex) man_seven_r.png   
+ex) man_seven_r_{}.png   
    
    
 ### Produce_Dataset.py   
@@ -34,7 +34,7 @@ CSV파일은 훈련 dataset을 만들기 위한 엑셀파일로, 1열에는 이�
 Custom_Dataset.py 프로그램을 import하여 mycsv.csv 파일로부터 dataset을 생성한다.   
 실행하면 훈련이 진행되며, 훈련을 마친 모델은 마지막 줄 save_checkpoint() 함수에 의해 my_checkpoint.pth.tar 파일에 저장된다.   
    
-!!구분이 필요한 카드 종류 수를 처음에 num_types 변수에 적어주어야 한다!! (..._r_{}.png 포함!)   
+!!구분이 필요한 카드 종류 수를 처음에 num_types 변수에 적어주어야 한다!! (뒤집어진 꼴의 이미지도 포함!)   
    
    
 ### Mahjong_Detection.py   
