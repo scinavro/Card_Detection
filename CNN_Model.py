@@ -15,9 +15,8 @@ num_types = 5
 
 dataset = CustomDataset(csv_file='mycsv.csv', root_dir='Resources', transform=transforms.ToTensor())
 
-train_set, test_set = torch.utils.data.random_split(dataset, [int(3/4*len(dataset)), len(dataset)-int(3/4*len(dataset))])
+train_set = torch.utils.data.random_split(dataset, len(dataset))
 train_loader = DataLoader(dataset=train_set, batch_size=batch_size, shuffle=True, drop_last=True)
-test_loader = DataLoader(dataset=test_set, batch_size=batch_size, shuffle=True, drop_last=True)
 
 class CNN(torch.nn.Module):
 
