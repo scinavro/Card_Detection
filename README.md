@@ -1,6 +1,5 @@
-# Detecting_Card   
-   
-## 파일 설명   
+# Mahjong_Detection
+
    
 ### Resource   
 훈련용 데이터 저장.   
