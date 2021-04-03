@@ -4,19 +4,23 @@ import numpy as np
 import math
 import CNN_Model as cnn
 
+
 def load_checkpoint(checkpoint):
     print("Loading checkpoint")
-    loaded_model.load_state_dict(checkpoint['state_dict'])
+    loaded_model.load_state_dict(checkpoint["state_dict"])
+
 
 def getContours(img):
-    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    contours, hierarchy = cv2.findContours(
+        img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
+    )
     for cnt in contours:
         area = cv2.contourArea(cnt)
-        if 5000>area>1000:
+        if 5000 > area > 1000:
             # print(area)
             cv2.drawContours(imgContour, cnt, -1, (255, 0, 0), 3)
             peri = cv2.arcLength(cnt, True)
-            approx = cv2.approxPolyDP(cnt, 0.02*peri, True)
+            approx = cv2.approxPolyDP(cnt, 0.02 * peri, True)
             # print(len(approx))
             # print(approx[0])
             objCor = len(approx)
@@ -26,7 +30,9 @@ def getContours(img):
                 objectType = "Mahjong"
 
                 width, height = 200, 200
-                if math.dist(approx[0][0], approx[1][0]) > math.dist(approx[0][0], approx[3][0]):
+                if math.dist(approx[0][0], approx[1][0]) > math.dist(
+                    approx[0][0], approx[3][0]
+                ):
                     pts1 = np.float32([approx[0], approx[1], approx[2], approx[3]])
                 else:
                     pts1 = np.float32([approx[1], approx[2], approx[3], approx[0]])
@@ -42,20 +48,33 @@ def getContours(img):
                 MahjongType = torch.argmax(loaded_model(torchMahjong))
                 print(MahjongType)
 
-                if MahjongType.item() == 0: objectType = "Sak_5"
-                elif MahjongType.item() == 1: objectType = "Man_7"
-                elif MahjongType.item() == 2: objectType = "Man_7"
-                elif MahjongType.item() == 3: objectType = "Choong"
-                elif MahjongType.item() == 4: objectType = "Choong"
+                if MahjongType.item() == 0:
+                    objectType = "Sak_5"
+                elif MahjongType.item() == 1:
+                    objectType = "Man_7"
+                elif MahjongType.item() == 2:
+                    objectType = "Man_7"
+                elif MahjongType.item() == 3:
+                    objectType = "Choong"
+                elif MahjongType.item() == 4:
+                    objectType = "Choong"
 
                 cv2.imshow("Mahjong Image", imgMahjong)
                 cv2.waitKey(1)
 
-            else: objectType = " "
+            else:
+                objectType = " "
 
-            cv2.rectangle(imgContour, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            cv2.putText(imgContour, objectType,
-                        (x+(w//2)-10, y+(h//2)-10), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
+            cv2.rectangle(imgContour, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.putText(
+                imgContour,
+                objectType,
+                (x + (w // 2) - 10, y + (h // 2) - 10),
+                cv2.FONT_HERSHEY_COMPLEX,
+                0.7,
+                (0, 0, 255),
+                2,
+            )
 
 
 loaded_model = cnn.model

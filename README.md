@@ -1,16 +1,4 @@
 # Mahjong_Detection
-
-   
-### Resource   
-훈련용 데이터 저장.   
-tong_one_{}.png ~ tong_nine_{}.png (통수패)   
-sak_one_{}.png ~ sak_nine_{}.png (삭수패)   
-man_one_{}.png ~ man_nine_{}.png (만수패)   
-poong_dong_{}.png ~ poong_book_{}.png (동서남북)   
-Baek_{}.png Bal_{}.png Choong_{}.png (백발중)   
-   
-!!상하 대칭이 아닌 이미지는 뒤집어진 이미지 데이터도 저장해야하며, 뒤집어진 데이터는 파일명에 _r 을 붙인다!!   
-ex) man_seven_r_{}.png   
    
    
 ### Produce_Dataset.py   
