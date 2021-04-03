@@ -17,9 +17,8 @@ dataset = CustomDataset(
     csv_file="mycsv.csv", root_dir="Resources", transform=transforms.ToTensor()
 )
 
-train_set = torch.utils.data.random_split(dataset, len(dataset))
 train_loader = DataLoader(
-    dataset=train_set, batch_size=batch_size, shuffle=True, drop_last=True
+    dataset=dataset, batch_size=batch_size, shuffle=True, drop_last=True
 )
 
 
