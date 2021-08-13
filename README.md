@@ -1,4 +1,4 @@
-# Mahjong_Detection
+# Card_Detection
    
    
 ### Produce_Dataset.py   
